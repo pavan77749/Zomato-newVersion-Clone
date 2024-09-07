@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SignupInputState, userSignupSchema } from "@/schema/userSchema";
 
 
-type SignupInputState = {
-fullname:string;
-  email: string;
-  password: string;
-  contact:number
-};
+// type SignupInputState = {
+// fullname:string;
+//   email: string;
+//   password: string;
+//   contact:number
+// };
 
 const Signup = () => {
   const loading = false;
@@ -22,6 +23,7 @@ const Signup = () => {
     password: "",
     contact:""
   });
+  const [errors ,setErrors] = useState<Partial<SignupInputState>>({})
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
@@ -29,6 +31,13 @@ const Signup = () => {
 
   const SignupSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
+     // form validation check start
+     const result = userSignupSchema.safeParse(input)
+     if(!result.success){
+         const fieldErrors = result.error.formErrors.fieldErrors
+         setErrors(fieldErrors as Partial<SignupInputState>)
+         return
+     }
     console.log(input);
   };
   return (
@@ -51,6 +60,9 @@ const Signup = () => {
               onChange={changeEventHandler}
             />
             <User className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.fullname}</span>
+            }
           </div>
         </div>
         <div className="mb-4">
@@ -64,6 +76,9 @@ const Signup = () => {
               onChange={changeEventHandler}
             />
             <Mail className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.email}</span>
+            }
           </div>
         </div>
         <div className="mb-4">
@@ -77,6 +92,9 @@ const Signup = () => {
               onChange={changeEventHandler}
             />
             <LockKeyhole className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.password}</span>
+            }
           </div>
         </div>
         <div className="mb-4">
@@ -90,6 +108,9 @@ const Signup = () => {
               onChange={changeEventHandler}
             />
             <Phone className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.contact}</span>
+            }
           </div>
         </div>
         {loading ? (

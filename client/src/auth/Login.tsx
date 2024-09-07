@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { LoginInputState, userLoginSchema } from "@/schema/userSchema";
 
-type LoginInputState = {
-  email: string;
-  password: string;
-};
+// type LoginInputState = {
+//   email: string;
+//   password: string;
+// };
 
 const Login = () => {
   const loading = false;
@@ -17,6 +18,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [errors ,setErrors] = useState<Partial<LoginInputState>>({})
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
@@ -24,6 +26,14 @@ const Login = () => {
 
   const loginSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
+    // form validation check start
+    const result = userLoginSchema.safeParse(input)
+    if(!result.success){
+        const fieldErrors = result.error.formErrors.fieldErrors
+        setErrors(fieldErrors as Partial<LoginInputState>)
+        return
+    }
+    // api implemenation Login start here
     console.log(input);
   };
   return (
@@ -46,6 +56,9 @@ const Login = () => {
               onChange={changeEventHandler}
             />
             <Mail className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.email}</span>
+            }
           </div>
         </div>
         <div className="mb-4">
@@ -59,6 +72,9 @@ const Login = () => {
               onChange={changeEventHandler}
             />
             <LockKeyhole className="absolute inset-2 left-2 text-gray-500 pointer-events-none" />
+            {
+                errors && <span className="text-sm text-red flex">{errors.password}</span>
+            }
           </div>
         </div>
         {loading ? (
