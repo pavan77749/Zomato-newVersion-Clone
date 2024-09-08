@@ -89,7 +89,11 @@ const Login = () => {
           >
             Login
           </Button>
+          
         )}
+        <div className="mt-3">
+        <Link to="/forget-password" className="text-blue-500">Forget Password</Link>
+        </div>
         <Separator className="my-4" />
         <p className="flex justify-start mt-2">
           New to Zomato?{" "}

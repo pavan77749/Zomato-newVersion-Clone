@@ -128,7 +128,7 @@ const Signup = () => {
         )}
         <Separator className="my-4" />
         <p className="flex justify-start mt-2">
-          New to Zomato?{" "}
+         Already have account?{" "}
           <Link to="/login" className="text-blue-500 ml-2">
             Login
           </Link>{" "}

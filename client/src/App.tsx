@@ -1,9 +1,10 @@
 import Login from './auth/login'
-import './App.css'
 import HomePage from './HomePage'
 import Signup from './auth/Signup'
-
+import ResetPassword from './auth/ResetPassword'
+import VerifyEmail from './auth/VerifyEmail'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import ForgetPassword from './auth/ForgetPassword'
 
 const appRouter = createBrowserRouter([
   {
@@ -19,6 +20,19 @@ const appRouter = createBrowserRouter([
     element:<Signup/>
   },
  
+  {
+    path:'/forget-password',
+    element:<ForgetPassword/>
+  },
+  {
+    path:'/reset-password',
+    element:<ResetPassword/>
+  },
+  {
+    path:'/verify-email',
+    element:<VerifyEmail/>
+  },
+ 
 ])
 
 function App() { 
@@ -27,7 +41,7 @@ function App() {
   return (
   <main>
     <RouterProvider router={appRouter}>
-    
+
     </RouterProvider>
   </main>
   )
