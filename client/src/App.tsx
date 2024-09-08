@@ -5,12 +5,20 @@ import ResetPassword from './auth/ResetPassword'
 import VerifyEmail from './auth/VerifyEmail'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ForgetPassword from './auth/ForgetPassword'
-import Navbar from './components/Navbar'
+
+import MainLayout from './layout/MainLayout'
+import HeroSection from './components/HeroSection'
 
 const appRouter = createBrowserRouter([
   {
   path:'/',
-  element:<Navbar/>,
+  element:<MainLayout/>,
+  children:[
+    {
+      path:'/',
+      element:<HeroSection/>
+    }
+  ]
   },
   {
     path:'/login',

@@ -36,7 +36,7 @@ const Navbar = () => {
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center h-14">
         <Link to="/">
-          <h1 className="font-extrabold md:font-extrabold text-2xl font-sanf">
+          <h1 className="font-extrabold md:font-extrabold text-2xl font-sanf text-red">
             Zomato
           </h1>
         </Link>
@@ -136,7 +136,7 @@ const MobileNavbar = () =>{
         </SheetTrigger>
         <SheetContent className="flex flex-col">
           <SheetHeader className="flex flex-row items-center justify-between mt-2">
-            <SheetTitle className="font-sans font-extrabold">Zomato</SheetTitle>
+            <SheetTitle className="font-sans font-extrabold text-red">Zomato</SheetTitle>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
