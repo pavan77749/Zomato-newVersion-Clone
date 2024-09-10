@@ -30,7 +30,7 @@ import { Button } from "./ui/button";
 
 
 const Navbar = () => {
-  const admin = true;
+  const admin = false;
   const loading = false;
   return (
     <div className="max-w-7xl mx-auto">

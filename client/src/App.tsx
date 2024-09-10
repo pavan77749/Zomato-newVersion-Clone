@@ -4,7 +4,7 @@ import ResetPassword from './auth/ResetPassword'
 import VerifyEmail from './auth/VerifyEmail'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ForgetPassword from './auth/ForgetPassword'
-
+import Cart from './components/Cart'
 import MainLayout from './layout/MainLayout'
 import HeroSection from './components/HeroSection'
 import Profile from './components/Profile'
@@ -31,6 +31,10 @@ const appRouter = createBrowserRouter([
     {
       path:'/restaurant/:id',
       element:<RestaurantDetail/>
+    },
+    {
+      path:'/cart',
+      element:<Cart/>
     },
   ]
   },
