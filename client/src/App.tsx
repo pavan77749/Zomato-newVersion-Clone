@@ -8,6 +8,7 @@ import ForgetPassword from './auth/ForgetPassword'
 
 import MainLayout from './layout/MainLayout'
 import HeroSection from './components/HeroSection'
+import Profile from './components/Profile'
 
 const appRouter = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const appRouter = createBrowserRouter([
     {
       path:'/',
       element:<HeroSection/>
+    },
+    {
+      path:'/profile',
+      element:<Profile/>
     }
   ]
   },
@@ -41,6 +46,7 @@ const appRouter = createBrowserRouter([
     path:'/verify-email',
     element:<VerifyEmail/>
   },
+
  
 ])
 

@@ -161,19 +161,19 @@ const MobileNavbar = () =>{
         <HandPlatter />
         <span>Order</span>
         </Link>
-        <Link to="/order-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/cart" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <ShoppingCart />
         <span>Cart (0)</span>
         </Link>
-        <Link to="/order-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/menu" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <SquareMenu />
         <span>Menu</span>
         </Link>
-        <Link to="/order-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/restaurant" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <Utensils />
         <span>Restaurant</span>
         </Link>
-        <Link to="/order-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/restaurant-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <PackageIcon />
         <span>Restaurant Orders</span>
         </Link>

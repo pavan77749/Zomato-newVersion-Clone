@@ -12,7 +12,7 @@ import { SignupInputState, userSignupSchema } from "@/schema/userSchema";
 // fullname:string;
 //   email: string;
 //   password: string;
-//   contact:number
+//   phone:number
 // };
 
 const Signup = () => {
@@ -21,7 +21,7 @@ const Signup = () => {
     fullname:"",
     email: "",
     password: "",
-    contact:""
+    phone:""
   });
   const [errors ,setErrors] = useState<Partial<SignupInputState>>({})
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
