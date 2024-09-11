@@ -44,7 +44,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-6">
             <Link to="/">Home</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/order-status">Order</Link>
+            <Link to="/order/status">Order</Link>
           
           {admin && (
             <Menubar>
@@ -157,7 +157,7 @@ const MobileNavbar = () =>{
         <User />
         <span>Profile</span>
         </Link>
-        <Link to="/order-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/order/status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <HandPlatter />
         <span>Order</span>
         </Link>
