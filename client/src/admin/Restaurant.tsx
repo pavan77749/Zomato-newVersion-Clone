@@ -1,34 +1,37 @@
-import React, { useState ,FormEvent} from "react";
+import React, { useState, FormEvent } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import {RestaurantInputState,restaurantFromSchema} from '@/schema/restaurantSchema'
+import {
+  RestaurantInputState,
+  restaurantFromSchema,
+} from "@/schema/restaurantSchema";
 
 const Restaurant = () => {
   const loading = false;
   const restaurantHai = true;
-  const [input,setInput] = useState<RestaurantInputState>({
-    restaurantName:"",
-    city:"",
-    country:"",
-    deliveryTime:0,
-    cuisines:[],
-    imageFile:undefined
-  })
-  const [errors ,setErrors] = useState<Partial<RestaurantInputState>>({})
-  const changeEventHandler = (e:React.ChangeEvent<HTMLInputElement>) =>{
+  const [input, setInput] = useState<RestaurantInputState>({
+    restaurantName: "",
+    city: "",
+    country: "",
+    deliveryTime: 0,
+    cuisines: [],
+    imageFile: undefined,
+  });
+  const [errors, setErrors] = useState<Partial<RestaurantInputState>>({});
+  const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
-  }
-  const restaurantSubmitHandler = (e:FormEvent) => {
+  };
+  const restaurantSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     // form validation check start
-    const result = restaurantFromSchema.safeParse(input)
-    if(!result.success){
-        const fieldErrors = result.error.formErrors.fieldErrors
-        setErrors(fieldErrors as Partial<RestaurantInputState>)
-        return
+    const result = restaurantFromSchema.safeParse(input);
+    if (!result.success) {
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setErrors(fieldErrors as Partial<RestaurantInputState>);
+      return;
     }
     // api implemenation Login start here
     console.log(input);
@@ -51,9 +54,11 @@ const Restaurant = () => {
                   className="focus-visible:ring-0"
                   onChange={changeEventHandler}
                 />
-                  {
-                errors && <span className="text-sm text-red flex">{errors.restaurantName}</span>
-            }
+                {errors && (
+                  <span className="text-sm text-red flex">
+                    {errors.restaurantName}
+                  </span>
+                )}
               </div>
               <div>
                 <Label>City</Label>
@@ -65,9 +70,9 @@ const Restaurant = () => {
                   className="focus-visible:ring-0"
                   onChange={changeEventHandler}
                 />
-                  {
-                errors && <span className="text-sm text-red flex">{errors.city}</span>
-            }
+                {errors && (
+                  <span className="text-sm text-red flex">{errors.city}</span>
+                )}
               </div>
               <div>
                 <Label>Country</Label>
@@ -79,9 +84,11 @@ const Restaurant = () => {
                   className="focus-visible:ring-0"
                   onChange={changeEventHandler}
                 />
-                  {
-                errors && <span className="text-sm text-red flex">{errors.country}</span>
-            }
+                {errors && (
+                  <span className="text-sm text-red flex">
+                    {errors.country}
+                  </span>
+                )}
               </div>
               <div>
                 <Label>Estimated Delivery Time (minutes)</Label>
@@ -93,9 +100,11 @@ const Restaurant = () => {
                   className="focus-visible:ring-0"
                   onChange={changeEventHandler}
                 />
-                  {
-                errors && <span className="text-sm text-red flex">{errors.deliveryTime}</span>
-            }
+                {errors && (
+                  <span className="text-sm text-red flex">
+                    {errors.deliveryTime}
+                  </span>
+                )}
               </div>
               <div>
                 <Label>Cuisines</Label>
@@ -105,28 +114,37 @@ const Restaurant = () => {
                   value={input.cuisines}
                   placeholder="Enter your cuisines"
                   className="focus-visible:ring-0"
-                  onChange={(e)=>
+                  onChange={(e) =>
                     setInput({
-                        ...input,
-                        cuisines : e.target.value.split(',')
+                      ...input,
+                      cuisines: e.target.value.split(","),
                     })
                   }
                 />
-                  {
-                errors && <span className="text-sm text-red flex">{errors.cuisines}</span>
-            }
+                {errors && (
+                  <span className="text-sm text-red flex">
+                    {errors.cuisines}
+                  </span>
+                )}
               </div>
               <div>
                 <Label>Upload Image</Label>
-                <Input type="file" accept="image/*" name="imageFile"    onChange={(e) =>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  name="imageFile"
+                  onChange={(e) =>
                     setInput({
                       ...input,
                       imageFile: e.target.files?.[0] || undefined,
                     })
-                  } />
-                   {
-                errors && <span className="text-sm text-red flex">{errors.imageFile?.name }</span>
-            }
+                  }
+                />
+                {errors && (
+                  <span className="text-sm text-red flex">
+                    {errors.imageFile?.name}
+                  </span>
+                )}
               </div>
             </div>
             <div className="mt-3 flex justify-end">
@@ -140,8 +158,9 @@ const Restaurant = () => {
                 </Button>
               ) : (
                 <Button className="w-full bg-red md:w-fit hover:bg-hoverRed">
-                  {restaurantHai ? 'Update Your Restaurant' : 'Add your Restaurant'}
-                  
+                  {restaurantHai
+                    ? "Update Your Restaurant"
+                    : "Add your Restaurant"}
                 </Button>
               )}
             </div>
