@@ -165,15 +165,15 @@ const MobileNavbar = () =>{
         <ShoppingCart />
         <span>Cart (0)</span>
         </Link>
-        <Link to="/menu" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/admin/menu" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <SquareMenu />
         <span>Menu</span>
         </Link>
-        <Link to="/restaurant" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/admin/restaurant" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <Utensils />
         <span>Restaurant</span>
         </Link>
-        <Link to="/restaurant-status" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
+        <Link to="/admin/orders" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <PackageIcon />
         <span>Restaurant Orders</span>
         </Link>
