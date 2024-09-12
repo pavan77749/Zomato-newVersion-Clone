@@ -1,8 +1,11 @@
 import { Request,Response } from "express"
 import { User } from "../models/user.model";
-import bcrypt from 'bcryptjs'
-import crypto from 'crypto'
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import cloudinary from "../utils/cloudinary";
+import {generateVerificationCode} from "../utils/generateVerificationCode"
+import { generateToken } from "../utils/generateToken";
+import { sendPasswordResetEmail, sendResetSuccessEmail, sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/email";
 
 export const signup = async (req:Request,res:Response)=>{
     try {
@@ -15,7 +18,7 @@ export const signup = async (req:Request,res:Response)=>{
             })
         }
         const hashedPassword = await bcrypt.hash(password,10);
-        const verificationToken = "fdfjldjf"
+        const verificationToken = generateVerificationCode()
         user = await User.create({
             fullname,
             email,
@@ -24,8 +27,9 @@ export const signup = async (req:Request,res:Response)=>{
             verificationToken,
             verficationTokenExpiresAt: Date.now()+24*60*60*1000,
         })
-        // generateToken(res,user)
-        // await sendVerificationEmail(email,verificationToken) 
+        generateToken(res,user)
+
+        await sendVerificationEmail(email,verificationToken) 
 
         const userWithoutPassword  = await User.findOne({email}).select("-password")
         return res.status(201).json({
@@ -56,6 +60,7 @@ export const login = async (req:Request,res:Response) =>{
                 message:"Incorrect email of password"
             })
         }
+        generateToken(res,user)
         user.lastLogin = new Date();
         await user.save()
         
@@ -88,7 +93,7 @@ export const verifyEmail = async(req:Request,res:Response)=>{
         await user.save();
 
         //send welcome email
-        // await sendWelcomeEmail(user.email,user.fullname)
+        await sendWelcomeEmail(user.email,user.fullname)
 
         return res.status(200).json({
             success:true,
@@ -130,7 +135,7 @@ export const forgotPassword = async (req:Request,res:Response) => {
         user.save()
 
         //send email
-        // await sendPasswordResetEmail(user.email, `${process.env.FRONTEND_URL}/resetpassword/${token}`)
+        await sendPasswordResetEmail(user.email, `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`)
 
         return res.status(200).json({
             success:true,
@@ -161,7 +166,7 @@ export const resetpassword = async (req:Request,res:Response)=>{
         await user.save()
 
         //send success reset email
-        // await sendResetSuccessEmail(User.email);
+        await sendResetSuccessEmail(user.email);
 
         return res.status(200).json({
             success:true,
