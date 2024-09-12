@@ -1,5 +1,4 @@
-// mongopassword : kwvEZkagFwMQvJ3a
-// mongousername:pavangpay05
+
 
 import mongoose from "mongoose"
 
