@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-export const isAutheticateed = async (req:Request,res:Response,next:NextFunction) =>{
+export const isAuthenticateed = async (req:Request,res:Response,next:NextFunction) =>{
     try {
         const token = req.cookies.token;
         if(!token){
