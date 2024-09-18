@@ -50,14 +50,14 @@ export const login = async (req:Request,res:Response) =>{
         if(!user){
             return res.status(400).json({
                 success:false,
-                message:"Incorrect email of password"
+                message:"Incorrect email or password"
             })
         }
         const isPasswordMatched = await bcrypt.compare(password, user.password)
         if(!isPasswordMatched){
             return res.status(400).json({
                 success:false,
-                message:"Incorrect email of password"
+                message:"Incorrect email or password"
             })
         }
         generateToken(res,user)
@@ -68,7 +68,7 @@ export const login = async (req:Request,res:Response) =>{
         const userWithoutPassword  = await User.findOne({email}).select("-password")
         return res.status(201).json({
             success:true,
-            message:`Welcome back ${user}`,
+            message:`Welcome back ${user.fullname}`,
             user: userWithoutPassword
         })
     } catch (error) {
@@ -80,6 +80,7 @@ export const login = async (req:Request,res:Response) =>{
 export const verifyEmail = async(req:Request,res:Response)=>{
     try {
         const {verificationCode} = req.body;
+        console.log(verificationCode)
         const user = await User.findOne({verificationToken:verificationCode , verficationTokenExpiresAt:{$gt:Date.now()}}).select("-password");
         if(!user){
             return res.status(400).json({

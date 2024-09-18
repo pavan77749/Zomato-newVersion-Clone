@@ -26,12 +26,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Moon, Sun, ShoppingCart,Loader2,Menu,User, HandPlatter, SquareMenu, Utensils, PackageIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 
 
 const Navbar = () => {
-  const admin = true;
-  const loading = false;
+  const {user,loading,logout} = useUserStore();
+ 
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center h-14">
@@ -46,7 +47,7 @@ const Navbar = () => {
             <Link to="/profile">Profile</Link>
             <Link to="/order/status">Order</Link>
           
-          {admin && (
+          {user?.admin && (
             <Menubar>
               <MenubarMenu>
                 <MenubarTrigger>Dashboard</MenubarTrigger>
@@ -104,6 +105,7 @@ const Navbar = () => {
           </Button>
         ) : (
           <Button
+          onClick={logout}
             className="bg-red hover:bg-hoverRed w-full focus-visible:ring-0"
           >
             Logout
@@ -125,7 +127,7 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNavbar = () =>{
-    const user = true
+    const {user,logout} = useUserStore()
     return (
 
         <Sheet>
@@ -165,10 +167,14 @@ const MobileNavbar = () =>{
         <ShoppingCart />
         <span>Cart (0)</span>
         </Link>
+        {
+          user?.admin && (
+            <>
         <Link to="/admin/menu" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <SquareMenu />
         <span>Menu</span>
         </Link>
+
         <Link to="/admin/restaurant" className="flex items-center gap-4 hover:bg-gray-200 py-3 rounded-lg cursor-pointer hover:text-gray-900 font-medium">
         <Utensils />
         <span>Restaurant</span>
@@ -177,6 +183,9 @@ const MobileNavbar = () =>{
         <PackageIcon />
         <span>Restaurant Orders</span>
         </Link>
+            </>
+          )
+        }
             </SheetDescription>
           <SheetFooter className="flex flex-col gap-5">
             
@@ -185,11 +194,11 @@ const MobileNavbar = () =>{
               <AvatarImage />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-              <h1 className="font-sans font-bold text-xl">User Name</h1>
+              <h1 className="font-sans font-bold text-xl">{user?.fullname}</h1>
                     </div>
                   
                     <SheetClose asChild>
-                    <Button type="submit" className="bg-red hover:bg-hoverRed">Logout</Button>
+                    <Button type="submit" className="bg-red hover:bg-hoverRed"  onClick={logout}>Logout</Button>
                   </SheetClose>
               
           

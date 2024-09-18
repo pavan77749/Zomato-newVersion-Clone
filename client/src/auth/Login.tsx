@@ -4,8 +4,9 @@ import { LockKeyhole, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginInputState, userLoginSchema } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 // type LoginInputState = {
 //   email: string;
@@ -13,18 +14,20 @@ import { LoginInputState, userLoginSchema } from "@/schema/userSchema";
 // };
 
 const Login = () => {
-  const loading = false;
+  // const loading = false;
   const [input, setInput] = useState<LoginInputState>({
     email: "",
     password: "",
   });
   const [errors ,setErrors] = useState<Partial<LoginInputState>>({})
+  const {loading,login} = useUserStore()
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
+  const navigate = useNavigate()
 
-  const loginSubmitHandler = (e: FormEvent) => {
+  const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
     // form validation check start
     const result = userLoginSchema.safeParse(input)
@@ -34,7 +37,12 @@ const Login = () => {
         return
     }
     // api implemenation Login start here
-    console.log(input);
+    try {
+      await login(input)
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen ">

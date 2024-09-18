@@ -4,8 +4,9 @@ import { LockKeyhole, Mail , Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignupInputState, userSignupSchema } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 
 // type SignupInputState = {
@@ -16,20 +17,22 @@ import { SignupInputState, userSignupSchema } from "@/schema/userSchema";
 // };
 
 const Signup = () => {
-  const loading = false;
+  // const loading = false;
   const [input, setInput] = useState<SignupInputState>({
     fullname:"",
     email: "",
     password: "",
-    phone:""
+    contact:""
   });
   const [errors ,setErrors] = useState<Partial<SignupInputState>>({})
+  const {signup,loading} = useUserStore()
+  const navigate = useNavigate()
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
-  const SignupSubmitHandler = (e: FormEvent) => {
+  const SignupSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
      // form validation check start
      const result = userSignupSchema.safeParse(input)
@@ -38,7 +41,14 @@ const Signup = () => {
          setErrors(fieldErrors as Partial<SignupInputState>)
          return
      }
-    console.log(input);
+     //login api implemention start here
+     try {
+       await signup(input)
+      navigate("/verify-email")
+     } catch (error) {
+      console.log(error)
+     }
+
   };
   return (
     <div className="flex items-center justify-center min-h-screen ">
