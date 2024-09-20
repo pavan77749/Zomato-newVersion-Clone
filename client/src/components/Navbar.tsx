@@ -35,7 +35,7 @@ const Navbar = () => {
  
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-center h-14">
+      <div className="flex justify-between items-center h-14 mx-2">
         <Link to="/">
           <h1 className="font-extrabold md:font-extrabold text-2xl font-sanf text-red">
             Zomato

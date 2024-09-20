@@ -2,7 +2,6 @@ import { Button } from "./ui/button"
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableFooter,
     TableHead,
@@ -17,7 +16,7 @@ import CheckoutConfirmPage from "./CheckoutConfirmPage";
 const Cart = () => {
     const [open,setOpen] = useState<boolean>(false)
   return (
-    <div className="flex flex-col max-w-7xl mx-auto my-10">
+    <div className="flex flex-col max-w-7xl mx-auto my-10 mx-5 ">
         <div className="flex justify-end">
             <Button variant={'link'}>Clear All</Button>
         </div>

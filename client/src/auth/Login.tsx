@@ -48,7 +48,7 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen ">
       <form
         onSubmit={loginSubmitHandler}
-        className="md:border md:border-gray-200 w-full rounded-lg max-w-md  md:p-8"
+        className="md:border md:border-gray-200 w-full p-5 rounded-lg max-w-md  md:p-8"
       >
         <div className="flex justify-start ">
           <h1 className="p-3 font-bold text-2xl">Login</h1>
