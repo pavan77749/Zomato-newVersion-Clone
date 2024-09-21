@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,10 +7,11 @@ import {
   RestaurantInputState,
   restaurantFromSchema,
 } from "@/schema/restaurantSchema";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
 
 const Restaurant = () => {
-  const loading = false;
-  const restaurantHai = true;
+  // const loading = false;
+  // const restaurantHai = false;
   const [input, setInput] = useState<RestaurantInputState>({
     restaurantName: "",
     city: "",
@@ -20,11 +21,12 @@ const Restaurant = () => {
     imageFile: undefined,
   });
   const [errors, setErrors] = useState<Partial<RestaurantInputState>>({});
+  const {loading,restaurant,updateRestaurant,createRestaurant,getRestaurant} = useRestaurantStore()
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
-  const restaurantSubmitHandler = (e: FormEvent) => {
+  const restaurantSubmitHandler = async(e: FormEvent) => {
     e.preventDefault();
     // form validation check start
     const result = restaurantFromSchema.safeParse(input);
@@ -35,7 +37,38 @@ const Restaurant = () => {
     }
     // api implemenation Login start here
     console.log(input);
+    const formData = new FormData;
+    formData.append("restaurantName",input.restaurantName)
+    formData.append("city",input.city)
+    formData.append("country",input.country)
+    formData.append("deliveryTime",input.deliveryTime.toString())
+    formData.append("cuisines",JSON.stringify(input.cuisines))
+
+    if(input.imageFile){
+      formData.append("imageFile",input.imageFile)
+    }
+    if(restaurant){
+      // update 
+      await updateRestaurant(formData)
+    }else{
+      //create
+      await createRestaurant(formData)
+    }
   };
+  useEffect(()=>{
+    const fetchRestaurant = async () => {
+      await getRestaurant();
+      setInput({
+        restaurantName: restaurant.restaurantName || "",
+        city: restaurant.city || "",
+        country: restaurant.country || "",
+        deliveryTime: restaurant.deliveryTime || 0,
+        cuisines: restaurant.cuisines ? restaurant.cuisines.map((cuisines:string)=>cuisines) : [],
+        imageFile: undefined,
+      })
+    }
+    fetchRestaurant()
+  },[])
   return (
     <div className="max-w-6xl mx-auto my-10">
       <div>
@@ -158,7 +191,7 @@ const Restaurant = () => {
                 </Button>
               ) : (
                 <Button className="w-full bg-red md:w-fit hover:bg-hoverRed">
-                  {restaurantHai
+                  {restaurant
                     ? "Update Your Restaurant"
                     : "Add your Restaurant"}
                 </Button>

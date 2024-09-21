@@ -4,22 +4,25 @@ import { Locate,  Mail, MapPin,  MapPinnedIcon, Plus ,Loader2 } from "lucide-rea
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 
-const loading = false;
+
 
 const Profile = () => {
+  const {user,updateProfile} = useUserStore()
+  const [isloading,setIsLoading] = useState<boolean>(false)
   const [profileData, setProfileData] = useState({
-    fullname: "",
-    email: "",
-    address: "",
-    city: "",
-    country: "",
-    profilePicture: "",
+    fullname: user?.fullname || "",
+    email: user?.email || "",
+    address:user?.address || "",
+    city: user?.city || "",
+    country:user?.country || "",
+    profilePicture:user?.profilePicture || "",
   });
   const imageRef = useRef<HTMLInputElement | null>(null);
   const [selectedProfilePicture, setSelectedProfilePicture] =
-    useState<string>();
+    useState<string>(profileData.profilePicture || "");
 
   const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,16 +45,23 @@ const Profile = () => {
     setProfileData({ ...profileData, [name]: value });
   };
 
-  const updateProfileHandler = (e: FormEvent<HTMLFormElement>) => {
+  const updateProfileHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // update profile Implementation come here
+    try {
+      setIsLoading(true)
+     await updateProfile(profileData)
+     setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+    }
   };
 
   return (
     
     <div>
-      <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5 mx-5 ">
-        <div className="flex items-center justify-between">
+      <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5  ">
+        <div className="flex items-center justify-between ">
           <div className="flex items-center gap-2">
             <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
               <AvatarImage src={selectedProfilePicture}/>
@@ -84,7 +94,7 @@ const Profile = () => {
           <Mail className="text-gray-500"/>
           <div className="w-full">
             <Label>Email</Label>
-            <input type="email" name="email" value={profileData.email} onChange={changeHandler} className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"/>
+            <input type="email" disabled name="email" value={profileData.email} onChange={changeHandler} className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"/>
           </div>
         </div>
         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
@@ -110,8 +120,8 @@ const Profile = () => {
         </div>
         </div>
         <div className="text-center">
-        {loading ? (
-          <Button disabled className="bg-red hover:bg-hoverRed w-full">
+        {isloading ? (
+          <Button disabled className="bg-red hover:bg-hoverRed ">
             <Loader2 className="mr-2 h-4 animate-spin" />
             Please wait
           </Button>

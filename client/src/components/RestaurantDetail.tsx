@@ -1,18 +1,28 @@
-import React from "react";
-import Image from "@/assets/Food.jpeg";
+import React, { useEffect } from "react";
+// import Image from "@/assets/Food.jpeg";
 import { Badge } from "./ui/badge";
 import { Timer } from "lucide-react";
 import AvailableMenu from "./AvailableMenu";
 import { Separator } from "./ui/separator";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
+import { useParams } from "react-router-dom";
 
 const RestaurantDetail = () => {
+  const params = useParams()
+  const {getSingleRestaurant,singleRestaurant} = useRestaurantStore()
+
+  useEffect(()=>{
+    getSingleRestaurant(params.id!)
+    // console.log(singleRestaurant)
+  },[params.id])
+
   return (
-    <div className="max-w-6xl mx-auto my-10">
+    <div className="max-w-6xl mx-auto my-5">
       <div className="w-full ">
         {/* Restaurant img  */}
         <div className="relative h-32 w-full md:h-64 lg:h-72">
           <img
-            src={Image}
+            src={singleRestaurant?.imageUrl}
             alt="res_img"
             className="object-cover w-full h-full rounded-lg shadow-lg"
           />
@@ -20,9 +30,9 @@ const RestaurantDetail = () => {
         {/* Restaurant Details  */}
         <div className="flex flex-col md:flex-row justify-between">
           <div className="my-5">
-            <h1 className="font-medium text-xl">Tandoori Tadka</h1>
+            <h1 className="font-medium text-xl">{singleRestaurant?.restaurantName || "loading..."}</h1>
             <div className="flex gap-2 my-2">
-              {["biryani", "momos", "jalebi"].map(
+              {singleRestaurant?.cuisines.map(
                 (cuisine: string, idx: number) => (
                   <Badge
                     key={idx}
@@ -38,7 +48,7 @@ const RestaurantDetail = () => {
               <div className="flex items-center gap-2">
                 <Timer className="w-5 h-5" />
                 <h1 className="flex items-center gap-2 font-medium">
-                  Delivery Time: <span className="text-red">25 min</span>
+                  Delivery Time: <span className="text-red">{singleRestaurant?.deliveryTime} min</span>
                 </h1>
               </div>
             </div>
@@ -46,7 +56,7 @@ const RestaurantDetail = () => {
         </div>
         <Separator  className="mb-3 md:hidden"/>
         {/* Available Menu  */}
-        <AvailableMenu  />
+        <AvailableMenu menus ={singleRestaurant?.menus} />
       </div>
     </div>
   );

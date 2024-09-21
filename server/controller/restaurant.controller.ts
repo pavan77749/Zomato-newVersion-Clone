@@ -102,10 +102,11 @@ export const updateRestaurant = async(req:Request,res:Response) =>{
 
 export const getRestaurantOrder = async(req:Request,res:Response)=>{
     try {
-        const restaurant = await Restaurant.findOne({ user: req.id });
+        const restaurant = await Restaurant.findOne({ user: req.id }).populate('menus');
         if (!restaurant) {
             return res.status(404).json({
                 success: false,
+                restaurant:[],
                 message: "Restaurant not found"
             })
         };
@@ -168,8 +169,8 @@ export const searchRestaurant = async (req:Request,res:Response) =>{
         //filter on the basis of searchQuery based on restaurantName and cuisines
         if(searchText){
             query.$or=[
-                {restaurantName:{$regex:searchText,$options:'i'}},
-                {cuisines:{$regex:searchText,$options:'i'}}
+                {restaurantName:{$regex:searchQuery,$options:'i'}},
+                {cuisines:{$regex:searchQuery,$options:'i'}}
             ]
         }
         // console.log(query)
@@ -191,7 +192,7 @@ export const searchRestaurant = async (req:Request,res:Response) =>{
 
 export const getSingleRestaurant = async (req:Request,res:Response) =>{
     try {
-        const restaurantId = req.params;
+        const restaurantId = req.params.id;
         const restaurant = await Restaurant.findById(restaurantId).populate({
             path:'menus',
             options:{createdAt:-1}
@@ -204,6 +205,7 @@ export const getSingleRestaurant = async (req:Request,res:Response) =>{
             })
         }
         return res.status(200).json({
+            success:true,
             restaurant
         })
     } catch (error) {

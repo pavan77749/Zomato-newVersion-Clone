@@ -12,25 +12,38 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { MenuInputState } from "@/schema/menuSchema";
+import { useMenuStore } from "@/store/useMenuStore";
 
 const EditMenu = ({selectedMenu,editOpen,setEditOpen}:{selectedMenu:MenuInputState; editOpen:boolean;setEditOpen:Dispatch<SetStateAction<boolean>>}) => {
-    const loading = false
+    // const loading = false
     const [input,setInput] = useState<MenuInputState>({
         name:"",
         description:"",
         price:0,
         image:undefined
     })
-
+    const {loading,editMenu} = useMenuStore();
     const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
         setInput({ ...input, [name]: type === "number" ? Number(value) : value });
       };
 
-      const SubmitHandler = (e: FormEvent) => {
+      const SubmitHandler = async(e: FormEvent) => {
         e.preventDefault()
         console.log(input)
         //api starts here
+        try {
+            const formData = new FormData();
+            formData.append("name", input.name);
+            formData.append("description", input.description);
+            formData.append("price", input.price.toString());
+            if(input.image){
+              formData.append("image", input.image);
+            }
+            await editMenu(selectedMenu._id,formData);
+          } catch (error) {
+            console.log(error);
+          }
       }
 
       useEffect(()=>{
