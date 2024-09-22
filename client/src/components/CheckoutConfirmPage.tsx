@@ -8,27 +8,52 @@ import {
 } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useUserStore } from "@/store/useUserStore";
+import { useCartStore } from "@/store/useCartStore";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
+import { CheckoutSessionRequest } from "@/types/orderTypes";
+import { useOrderStore } from "@/store/useOrderStore";
 
 const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>;}) => {
   const {user} = useUserStore()
     const [input,setInput] = useState({
         name:user?.fullname || "",
         email:user?.email || "",
-        contact:user?.contact || "",
+        contact:user?.contact.toString() || "",
         address:user?.address || "",
         city:user?.city || "",
         country:user?.country || ""
     })
+    const {cart} = useCartStore()
+    const {restaurant} = useRestaurantStore()
+    const {createCheckoutSession,loading}= useOrderStore()
     const changeEventHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target;
         setInput({...input, [name]:value})
     }
-    const checkoutHandler = (e:FormEvent) =>{
+    const checkoutHandler = async  (e:FormEvent) =>{
         e.preventDefault()
         //api implementation starts here
-        console.log(input)
+       
+        try {
+          const checkoutData:  CheckoutSessionRequest = {
+            cartItems:cart.map((cartItem)=>({
+              menuId:cartItem._id,
+              name:cartItem.name,
+              image:cartItem.image,
+              price:cartItem.price.toString(),
+              quantity:cartItem.quantity.toString()
+            })),
+            deliveryDetails:input,
+            restaurantId:restaurant?._id as string,
+
+          }
+          await createCheckoutSession(checkoutData)
+        } catch (error) {
+         
+        }
     }
 
   return (
@@ -71,7 +96,13 @@ const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispat
                 </div>
             </div>
       <DialogFooter className="col-span-2 pt-5">
-        <Button type="submit" className="bg-red hover:bg-hoverRed">Continue to Payment</Button>
+        {
+          loading ? (
+            <Button   disabled className="bg-red hover:bg-hoverRed"> <Loader2 className="mr-2 h-4 w-4 animate-spin"/> please wait</Button> 
+          ) 
+          :
+          (<Button type="submit" className="bg-red hover:bg-hoverRed">Continue to Payment</Button>)
+        }
       </DialogFooter>
           </form>
       </DialogContent>

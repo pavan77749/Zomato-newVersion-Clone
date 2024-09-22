@@ -45,11 +45,17 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
                 message: "Restaurant not found."
             })
         };
+
+        const totalAmount = checkoutSessionRequest.cartItems.reduce((total, item) => {
+            return total + (item.price * item.quantity);
+        }, 0);
+         
         const order: any = new Order({
             restaurant: restaurant._id,
             user: req.id,
             deliveryDetails: checkoutSessionRequest.deliveryDetails,
             cartItems: checkoutSessionRequest.cartItems,
+            totalAmount,
             status: "pending"
         });
 

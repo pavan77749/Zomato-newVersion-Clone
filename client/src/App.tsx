@@ -16,6 +16,8 @@ import Orders from './admin/Orders'
 import Success from './components/Success'
 import { useUserStore } from './store/useUserStore'
 import { Navigate } from 'react-router-dom'
+import { useThemeStore } from './store/useThemeStore'
+import { useEffect } from 'react'
 
 
 const ProtectedRoutes = ({children}:{children:React.ReactNode}) =>{
@@ -119,7 +121,10 @@ const appRouter = createBrowserRouter([
 ])
 
 function App() { 
-
+  const initializeTheme = useThemeStore((state:any)=>state.initializeTheme)
+  useEffect(()=>{
+    initializeTheme()
+  },[])
   return (
   <main>
     <RouterProvider router={appRouter}>

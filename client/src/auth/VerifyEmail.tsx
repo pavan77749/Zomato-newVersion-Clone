@@ -35,7 +35,7 @@ const VerifyEmail = () => {
         await verifyEmail(verificationCode)
         navigate("/login")
       } catch (error) {
-        console.log(error)
+       
       }
    
     }

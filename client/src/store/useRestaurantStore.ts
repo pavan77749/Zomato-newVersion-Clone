@@ -1,4 +1,5 @@
 
+import { Orders } from "@/types/orderTypes";
 import { MenuItem, RestaurantState } from "@/types/restaurantTypes";
 import axios from "axios";
 import { toast } from "sonner";
@@ -9,12 +10,13 @@ const API_END_POINT = "http://localhost:8000/api/v1/restaurant";
 axios.defaults.withCredentials=true
 
 
-export const useRestaurantStore = create<RestaurantState>()(persist((set)=>({
+export const useRestaurantStore = create<RestaurantState>()(persist((set,get)=>({
     loading:false,
     restaurant:null,
     searchedRestaurant:null,
     appliedFilter:[],
     singleRestaurant : null,
+    restaruantOrder:[],
     createRestaurant: async(formData:FormData) =>{
         try {
             set({loading:true});
@@ -120,7 +122,37 @@ export const useRestaurantStore = create<RestaurantState>()(persist((set)=>({
                 set({singleRestaurant:response.data.restaurant})
             }
         } catch (error) {}
+    },
+    getRestaurantOrders: async ()=> {
+        try {
+            const response  = await axios.get(`${API_END_POINT}/order`);
+            if(response.data.success){
+                set({restaruantOrder:response.data.orders})
+            }
+        } catch (error) {
+           
+        }
+    },
+    updateRestaurantOrder: async(orderId:string,status:string) => {
+        try {
+            const response = await axios.put(`${API_END_POINT}/order/${orderId}/status`,{status},{
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            });
+            if(response.data.success){
+                const updatedOrder = get().restaruantOrder.map((order:Orders)=> {
+                    return order._id === orderId ? {...order,status:response.data.status} : order;
+                })
+                set({restaruantOrder:updatedOrder})
+                toast.success(response.data.message)
+            }
+        
+        } catch (error:any) {
+            toast.error(error.response.data.message)
+        }
     }
+
 }),{
     name:'restaurant-name',
     storage:createJSONStorage(()=>localStorage)

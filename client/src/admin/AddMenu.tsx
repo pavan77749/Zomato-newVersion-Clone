@@ -66,7 +66,7 @@ const AddMenu = () => {
           }
           await createMenu(formData);
         } catch (error) {
-          console.log(error);
+       
         }
        
       }

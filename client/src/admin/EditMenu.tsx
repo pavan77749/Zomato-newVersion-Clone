@@ -30,7 +30,7 @@ const EditMenu = ({selectedMenu,editOpen,setEditOpen}:{selectedMenu:MenuInputSta
 
       const SubmitHandler = async(e: FormEvent) => {
         e.preventDefault()
-        console.log(input)
+       
         //api starts here
         try {
             const formData = new FormData();
@@ -42,7 +42,7 @@ const EditMenu = ({selectedMenu,editOpen,setEditOpen}:{selectedMenu:MenuInputSta
             }
             await editMenu(selectedMenu._id,formData);
           } catch (error) {
-            console.log(error);
+            
           }
       }
 

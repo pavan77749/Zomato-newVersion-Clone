@@ -36,7 +36,7 @@ const Restaurant = () => {
       return;
     }
     // api implemenation Login start here
-    console.log(input);
+    
     const formData = new FormData;
     formData.append("restaurantName",input.restaurantName)
     formData.append("city",input.city)
