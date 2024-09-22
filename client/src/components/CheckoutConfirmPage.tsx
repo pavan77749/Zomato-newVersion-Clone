@@ -9,15 +9,17 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>;}) => {
+  const {user} = useUserStore()
     const [input,setInput] = useState({
-        name:"",
-        email:"",
-        contact:"",
-        address:"",
-        city:"",
-        country:""
+        name:user?.fullname || "",
+        email:user?.email || "",
+        contact:user?.contact || "",
+        address:user?.address || "",
+        city:user?.city || "",
+        country:user?.country || ""
     })
     const changeEventHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target;
@@ -28,6 +30,7 @@ const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispat
         //api implementation starts here
         console.log(input)
     }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -44,7 +47,7 @@ const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispat
                 </div>
                 <div>
                 <Label>Email</Label>
-                <Input type="email" name="email" value={input.email} onChange={changeEventHandler} className="focus-visible:ring-0"/>
+                <Input type="email" name="email" disabled value={input.email} onChange={changeEventHandler} className="focus-visible:ring-0"/>
                 </div>
                 <div>
                 <Label>Contact</Label>

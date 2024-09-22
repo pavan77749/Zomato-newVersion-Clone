@@ -3,8 +3,12 @@ import Image from "@/assets/Food.jpeg";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import { MenuItem } from "@/types/restaurantTypes";
+import { useCartStore } from "@/store/useCartStore";
+import { useNavigate } from "react-router-dom";
 
 const AvailableMenu = ({menus}:{menus:MenuItem[]}) => {
+  const {addToCart} = useCartStore()
+  const navigate = useNavigate()
   return (
     <div className="md:p-4">
       <h1 className="text-xl md:text-2xl font-extrabold mb-3">Available Menu</h1>
@@ -30,7 +34,7 @@ const AvailableMenu = ({menus}:{menus:MenuItem[]}) => {
             </h3>
           </CardContent>
           <CardFooter className="flex justify-start">
-            <Button className="bg-red hover:bg-hoverRed w-full">Add to Cart</Button>
+            <Button onClick={()=>{addToCart(menu) ; navigate("/cart")} } className="bg-red hover:bg-hoverRed w-full">Add to Cart</Button>
           </CardFooter>
         </Card>
           ))

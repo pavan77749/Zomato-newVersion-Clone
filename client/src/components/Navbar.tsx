@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Menubar,
   MenubarTrigger,
@@ -27,12 +27,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Moon, Sun, ShoppingCart,Loader2,Menu,User, HandPlatter, SquareMenu, Utensils, PackageIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useUserStore } from "@/store/useUserStore";
+import { useCartStore } from "@/store/useCartStore";
 
 
 
 const Navbar = () => {
   const {user,loading,logout} = useUserStore();
- 
+  const {cart} = useCartStore()
+  const navigate = useNavigate()
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center h-14 mx-2">
@@ -84,16 +86,21 @@ const Navbar = () => {
           </div>
           <Link to="/cart" className="relative cursor-pointer">
             <ShoppingCart />
-            <Button
-              size={"icon"}
-              className="absolute -inset-y-3 left-2 text-xs rounded-full h-4 w-4 bg-red hover:bg-hoverRed"
-            >
-              5
-            </Button>
+            {
+              cart.length > 0 && (
+
+                <Button
+                  size={"icon"}
+                  className="absolute -inset-y-3 left-2 text-xs rounded-full h-4 w-4 bg-red hover:bg-hoverRed"
+                  >
+                  {cart.length}
+                 </Button>
+              )
+            }
           </Link>
           <div>
-            <Avatar>
-              <AvatarImage />
+            <Avatar onClick={()=>navigate("/profile")}>
+              <AvatarImage src={user?.profilePicture} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
@@ -191,7 +198,7 @@ const MobileNavbar = () =>{
             
                     <div className="flex flex-row items-center gap-2">
                     <Avatar>
-              <AvatarImage />
+              <AvatarImage src={user?.profilePicture} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
               <h1 className="font-sans font-bold text-xl">{user?.fullname}</h1>
