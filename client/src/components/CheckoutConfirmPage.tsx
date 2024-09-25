@@ -52,7 +52,7 @@ const CheckoutConfirmPage = ({ open, setOpen,}: { open: boolean; setOpen: Dispat
           }
           await createCheckoutSession(checkoutData)
         } catch (error) {
-         
+         console.log(error)
         }
     }
 
